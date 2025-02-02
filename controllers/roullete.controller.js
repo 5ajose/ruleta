@@ -87,7 +87,7 @@ exports.betRoulletAndCalculateWinners = async(req, res) => {
             }
             const isWinnerColor = bet.color == winnerColor
             if (isWinnerColor) {
-                let total = bet.amount * 1.8
+                let total = bet.amount * 1.8 
                 user.cash += total
                 await user.save()
             }
