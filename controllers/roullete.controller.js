@@ -3,11 +3,11 @@ const User = require('./../models/User')
 
 exports.createRoullete = async(req, res) => {
     try {
-        const roullete = await new Roullete({
+        const roullete = new Roullete({
             bet: [],
             results: []
         })
-        roullete.save()
+        await roullete.save()
         console.log(roullete)
         return res.status(201).json({
             id: roullete._id
@@ -81,6 +81,9 @@ exports.betRoulletAndCalculateWinners = async(req, res) => {
                 let total = bet.amount * 5
                 user.cash += total
                 await user.save()
+                roullete.numberResults.push(bet)
+                await roullete.save()
+
             } else {
                 user.cash -= bet.amount
                 await user.save()
@@ -90,10 +93,15 @@ exports.betRoulletAndCalculateWinners = async(req, res) => {
                 let total = bet.amount * 1.8 
                 user.cash += total
                 await user.save()
+                const message = {
+                    msg: "Usuario gano por color",
+                    bet: bet
+                }
+                roullete.colorResults.push(message)
+                await roullete.save()
             }
-            console.log(winnerNumber)
-            
         }
+        return res.status(200).json({msg:"has ganado ", WinnerNumber: roullete.numberResults, WinnerColor: roullete.colorResults})   
     }
     catch(error) {
         console.log(error.message)

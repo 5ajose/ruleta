@@ -23,8 +23,13 @@ const roulleteSchema = new Schema({
             }
         }
     ],
-    results: {
-        type: Array
+    numberResults: {
+        type: Array,
+
+    },
+    colorResults: {
+        type: Array,
+
     }
 })
 
